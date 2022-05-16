@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>URL Shortener Microservice</title>
+        <link rel="stylesheet" href="public/style.css" type="text/css">
+    </head>
+    <body>
+        <h1>URL Shortener Microservice</h1>
+        <div>
+            <form action="api/shorturl" method="post">
+                <!--legend>URL Shortener</legend>
+                <label for="url_input">URL:</label>-->
+                <input id="url_input" name="url" type="text" placeholder="website url" />
+                <input id="url_submit" type="submit" value="POST URL" />
+            </form>
+        </div>
+        <h2>Project Description</h2>
+        <p>
+            This is project 3 of 5 for <a href="http://www.freecodecamp.org">FreeCamp.org's</a> 
+            APIs and Microservices certificate, the 5th of 6 full stack JavaScript certificates.
+            This API creates short urls for valid websites by assigning a number to the 
+            website and allowing the website to be accessed from the subdirectory api/shorturl/
+            followed by the number of the website. For starters, the subdirectory 1
+            (<a href="api/shorturl/1">/api/shorturl/1</a>) will take you to the search engine 
+            DuckDuckGo. If you would like to see a JSON object with all the information about the 
+            storage of the links, access the link <a href="api/shorturl/">/api/shorturl/</a>). This
+            link uses the find operation on a Mongo database to show all the information stored in 
+            the database. 
+        </p>
+        <h2>Example Usage</h2>
+        <p>
+            To use this API, the form at the top of the page must be utilized. Enter the url of a website and 
+            press the post button. There's no need to enter in http://www. or https://www. as the links will 
+            be processed by the back-end removing these before storing the link in the database. 
+        </p>
+        <h2>Example Output</h2>
+        <p>
+            Upon typing duckduckgo.com in the form above, the user should see the following output:
+        </p>
+        <code>
+            {"original_url":"duckduckgo.com","short_url":1}
+        </code>
+        <p>
+            This entry will be stored in the Mongo database as: 
+        </p>
+        <code>
+            {"_id":"612bf3e8c0dfe23586736daa","number":1,"url":"duckduckgo.com","date":"2021-08-29T20:54:00.084Z","__v":0}
+        </code>
+        <h2>Links Stored in Database</h2>
+        <p>
+            This is a dynamically generated list and will change when a website is added to the form at 
+            the top of the page.
+        </p>
+        <table>
+        <thead>
+            <th>Full URL</th>
+            <th>Short URL</th>
+            <th>Date Added</th>
+        </thead>
+            <tbody>
+                <% database.forEach(record => { %>
+                    <tr>
+                        <td><%= record.url %></td>
+                        <td><a href="/api/shorturl/<%= record.number %>"><%= record.number %></a></td>
+                        <td><%= record.date.toUTCString() %></td>
+                    </tr>
+                <% }) %> 
+            </tbody>
+        </table>
+    </body>
+</html>
